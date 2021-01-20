@@ -20,11 +20,8 @@ public class SearchEngine {
 	 * This does a graph traversal of the web, starting at the given url.
 	 * For each new page seen, it updates the wordIndex, the web graph,
 	 * and the set of visited vertices.
-	 * 
-	 * 	This method will fit in about 30-50 lines (or less)
 	 */
 	public void crawlAndIndex(String url) throws Exception {
-		// TODO : Add code here
 
 
 
@@ -68,7 +65,6 @@ public class SearchEngine {
 
 			//adds edges from input URL to all links in its page
 			this.internet.addEdge(url,link);
-			//System.out.println("Connecting " + url + " to " + link);
 		}
 
 
@@ -86,34 +82,16 @@ public class SearchEngine {
 	 * This computes the pageRanks for every vertex in the web graph.
 	 * It will only be called after the graph has been constructed using
 	 * crawlAndIndex(). 
-	 * To implement this method, refer to the algorithm described in the 
-	 * assignment pdf. 
-	 * 
-	 * This method will probably fit in about 30 lines.
 	 */
 	public void assignPageRanks(double epsilon) {
-		// TODO : Add code here
-
 		for(String url : this.internet.getVertices()){
 			this.internet.setPageRank(url, 1);
 		}
-
-		//ArrayList<Double> firstRanking = new ArrayList<>();
-		//ArrayList<Double> epsilonDifference = new ArrayList<>();
 
 		Double initialPR = 0.0;
 		Double newPR = 0.0;
 		Double PRdiff = 0.0;
 
-		//Iterator<Double> it = computeRanks(this.internet.getVertices()).iterator();
-
-		/*do {
-			for (String url : this.internet.getVertices()){
-				firstRanking.add(this.internet.getPageRank(url));
-				this.internet.setPageRank(url, pageRank(url));
-				firstRanking.g
-			}
-		}while()*/
 		do {
 			for (int i = 0; i < this.internet.getVertices().size(); i++) {
 
@@ -132,12 +110,8 @@ public class SearchEngine {
 			for (int i = 0; i < this.internet.getVertices().size(); i++) {
 
 				String currentURL = this.internet.getVertices().get(i);
-				//initialPR = this.internet.getPageRank(currentURL);
 				//set the page rank of each i vertex to be equal to the page rank of i vertex after running compute ranks
 				this.internet.setPageRank(currentURL, this.pageRank(currentURL));
-				//System.out.println("Current page rank of: " + currentURL + " is " + this.internet.getPageRank(currentURL));
-				//newPR = this.internet.getPageRank(currentURL);
-				//PRdiff = Math.abs(newPR - initialPR);
 			}
 			j--;
 		}
@@ -154,8 +128,6 @@ public class SearchEngine {
 	 * their position in the list.
 	 */
 	public ArrayList<Double> computeRanks(ArrayList<String> vertices) {
-		// TODO : Add code here
-
 		ArrayList<Double> initialRankList = new ArrayList<Double>();
 
 		for (String url : vertices){
@@ -169,27 +141,7 @@ public class SearchEngine {
 
 		double pagerank = this.internet.getPageRank(vertex);
 		double temp = 0.0;
-		//System.out.println("The current PR of "+vertex+" is "+pagerank);
 
-		//this.internet.getEdgesInto(vertex);
-/*
-		if(!(this.internet.getEdgesInto(vertex).isEmpty())) {
-			System.out.println(vertex + "has the following links pointing to it: " + this.internet.getEdgesInto(vertex));
-			for (String url : this.internet.getEdgesInto(vertex)) {
-				System.out.println("I am dividing " + pageRank(url) + " by " + this.internet.getOutDegree(url) );
-				pagerank /= pageRank(url) / this.internet.getOutDegree(url);
-				System.out.println("I am setting "+ vertex + " to be " + pagerank);
-			}
-
-			pagerank += 0.5 + (0.5 * pagerank);
-			System.out.println("I am setting "+ vertex + " after damping to be " + pagerank);
-		}
-		else{
-			System.out.println("I am setting "+ vertex + " to be 0.5");
-			pagerank = 0.5;
-		}
-
- */
 		if (!(this.internet.getEdgesInto(vertex).isEmpty())) {
 			for (String url : this.internet.getEdgesInto(vertex)) {
 				temp += this.internet.getPageRank(url) / this.internet.getOutDegree(url);
@@ -197,7 +149,6 @@ public class SearchEngine {
 
 			pagerank = 0.5 + temp * 0.5;
 
-			//System.out.println("The current PR of " + vertex + " is " + pagerank);
 		}
 
 		else{
@@ -208,43 +159,9 @@ public class SearchEngine {
 	}
 
 
-	/*	// Performs one iteration of the PageRank algorithm and updates the values in the array 'pageranks'.
-		private void iterateOnce(double damping) {
-			
-			Double [] pageranks = new Double[this.internet.getVertices().size()];
-			// Pre-divide by number of outgoing links
-			for (int i = 0; i < this.internet.getEdgesInto(); i++) {
-				if (numOutgoingLinks[i] > 0)
-					pageranks[i] /= numOutgoingLinks[i];
-			}
-
-			// Distribute PageRanks over links (main calculation)
-			//Arrays.fill(newPageranks, 0);
-			for (int i = 0; i < links.length; ) {
-				int numIncoming = links[i + 1];
-				double sum = 0;
-				for (int j = 0; j < numIncoming; j++) {
-					int src = links[i + 2 + j];
-					sum += pageranks[src];
-				}
-				int dest = links[i];
-				newPageranks[dest] = sum;
-				i += numIncoming + 2;
-			}
-
-			// Apply bias and damping to all active pages
-			//double temp = bias * damping + (1 - damping) / numActive;  // Factor out some arithmetic
-			for (int i = 0; i < idLimit; i++) {
-				if (isActive[i])
-					pageranks[i] = newPageranks[i] * damping + 0.5;
-			}
-		}*/
-
 	
 	/* Returns a list of urls containing the query, ordered by rank
 	 * Returns an empty list if no web site contains the query.
-	 * 
-	 * This method should take about 25 lines of code.
 	 */
 	public ArrayList<String> getResults(String query) {
 		// TODO: Add code here
